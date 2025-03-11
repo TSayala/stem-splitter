@@ -64,7 +64,7 @@ class MidiConverter:
             y_mono = audio
             
         onset_env = librosa.onset.onset_strength(y=y_mono, sr=sr)
-        tempo = librosa.beat.tempo(onset_envelope=onset_env, sr=sr)[0]
+        tempo = librosa.feature.rhythm.tempo(onset_envelope=onset_env, sr=sr)[0]
         return tempo
     
     def _convert_melodic(self, 
