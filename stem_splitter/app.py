@@ -4,6 +4,7 @@ import time
 import logging
 import json
 import threading
+import torch
 from pathlib import Path
 from typing import Dict, List, Optional, Union, Callable
 
@@ -54,6 +55,20 @@ class StemSplitterApp:
         self.active_tasks = {}
         self.task_counter = 0
         self.task_lock = threading.Lock()
+
+        self.optimize_for_system()
+
+    def optimize_for_system(self):
+        """Optimize configuration for current system."""
+        if hasattr(self.separation_config, 'optimize_for_gpu'):
+            if self.separation_config.device == "cuda":
+                self.separation_config.optimize_for_gpu()
+        
+        # Initialize audio processor with cleanup
+        if hasattr(self.audio_processor, 'cleanup_gpu_memory'):
+            # Set up automatic cleanup
+            import atexit
+            atexit.register(self.audio_processor.cleanup_gpu_memory)
 
     def separate_audio(self, 
                        input_file: Union[str, Path],

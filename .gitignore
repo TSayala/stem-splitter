@@ -160,7 +160,9 @@ cython_debug/
 #.idea/
 
 audio/
+test_output_enhanced/
 setup.bat
+setup.ps1
 requirements.txt
 
 test.ipynb
